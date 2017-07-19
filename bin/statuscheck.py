@@ -6,7 +6,7 @@
 
 import demjson
 import requests
-import subprocess
+import sys
 import ConfigParser
 
 config = ConfigParser.ConfigParser()
@@ -15,9 +15,8 @@ config.read("conf/properties.ini")
 
 
 ### Local Functions ####
-def runStorjShareStatus():
- result = subprocess.check_output(['storjshare-status', '-j'])
- parsed_result = demjson.decode(result.replace("[","").replace("]",""))
+def parseStorjStats(stats):
+ parsed_result = demjson.decode(stats.replace("[","").replace("]",""))
  return parsed_result
 
 def sendIFTTTRequest(json):
@@ -28,9 +27,8 @@ def sendIFTTTRequest(json):
 
 ########################
 
-def main():
- result = subprocess.check_output(['storjshare-status', '-j'])
- input = runStorjShareStatus()
+def main(stats):
+ input = parseStorjStats(stats)
  value1 = str(input[config.get('StorjValues', 'v1')])
  value2 = str(input[config.get('StorjValues', 'v2')])
  value3 = str(input[config.get('StorjValues', 'v3')])
@@ -38,4 +36,5 @@ def main():
  sendIFTTTRequest(json) 
  return
 
-main()
+print sys.argv[1]
+main(sys.argv[1])
