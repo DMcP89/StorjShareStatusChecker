@@ -8,9 +8,13 @@ import demjson
 import requests
 import sys
 import ConfigParser
+from os.path import dirname, abspath
+
+d = dirname(dirname(abspath(__file__)))
+print d
 
 config = ConfigParser.ConfigParser()
-config.read("conf/properties.ini")
+config.read(d+"/conf/properties.ini")
 
 
 
