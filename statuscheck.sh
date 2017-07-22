@@ -12,7 +12,7 @@ log="statuscheck.log"
 echo "$now -- Collecting storj stats" > $log
 
 stats=$(/usr/local/bin/storjshare status -j)
-echo $stats
+#echo $stats
 
 python $DIR/bin/statuscheck.py "$stats"
 

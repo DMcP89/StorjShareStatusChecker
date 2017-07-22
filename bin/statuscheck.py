@@ -11,7 +11,7 @@ import ConfigParser
 from os.path import dirname, abspath
 
 d = dirname(dirname(abspath(__file__)))
-print d
+#print d
 
 config = ConfigParser.ConfigParser()
 config.read(d+"/conf/properties.ini")
@@ -40,5 +40,5 @@ def main(stats):
  sendIFTTTRequest(json) 
  return
 
-print sys.argv[1]
+#print sys.argv[1]
 main(sys.argv[1])
