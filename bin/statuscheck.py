@@ -24,8 +24,9 @@ def parseStorjStats(stats):
  return parsed_result
 
 def sendIFTTTRequest(json):
- key = config.get('IFTTTKey', 'KEY')
- url = 'https://maker.ifttt.com/trigger/storjcheck/with/key/'+key
+ key = config.get('IFTTT', 'KEY')
+ trigger = config.get('IFTTT', 'TRIGGER')
+ url = 'https://maker.ifttt.com/trigger/'+trigger+'/with/key/'+key
  response = requests.post(url, data=json)
  return response
 
