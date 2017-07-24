@@ -11,34 +11,38 @@ import ConfigParser
 from os.path import dirname, abspath
 
 d = dirname(dirname(abspath(__file__)))
-print d
+# print d
 
 config = ConfigParser.ConfigParser()
-config.read(d+"/conf/properties.ini")
+config.read(d + "/conf/properties.ini")
 
 
+# Local Functions
+def parse_storj_stats(stats):
+    parsed_result = demjson.decode(stats.replace("[", "").replace("]", ""))
+    return parsed_result
 
-### Local Functions ####
-def parseStorjStats(stats):
- parsed_result = demjson.decode(stats.replace("[","").replace("]",""))
- return parsed_result
 
-def sendIFTTTRequest(json):
- key = config.get('IFTTTKey', 'KEY')
- url = 'https://maker.ifttt.com/trigger/storjcheck/with/key/'+key
- response = requests.post(url, data=json)
- return response
+def send_ifttt_request(json):
+    key = config.get('IFTTT', 'KEY')
+    trigger = config.get('IFTTT', 'TRIGGER')
+    url = 'https://maker.ifttt.com/trigger/' + trigger + '/with/key/' + key
+    response = requests.post(url, data=json)
+    return response
+
 
 ########################
 
-def main(stats):
- input = parseStorjStats(stats)
- value1 = str(input[config.get('StorjValues', 'v1')])
- value2 = str(input[config.get('StorjValues', 'v2')])
- value3 = str(input[config.get('StorjValues', 'v3')])
- json = {"value1" : value1, "value2" : value2, "value3" : value3} 
- sendIFTTTRequest(json) 
- return
 
-print sys.argv[1]
+def main(stats):
+    results = parse_storj_stats(stats)
+    value1 = str(results[config.get('StorjValues', 'v1')])
+    value2 = str(results[config.get('StorjValues', 'v2')])
+    value3 = str(results[config.get('StorjValues', 'v3')])
+    json = {"value1": value1, "value2": value2, "value3": value3}
+    send_ifttt_request(json)
+    return
+
+
+# print sys.argv[1]
 main(sys.argv[1])
