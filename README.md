@@ -1,4 +1,4 @@
-#Storjshare Status Checker
+##Storjshare Status Checker
 
 Small script package to collect stats from Storjshare and sends them to IFTTT.
 
